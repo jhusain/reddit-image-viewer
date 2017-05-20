@@ -1,0 +1,44 @@
+<html>
+<head>
+  <style>
+    body {
+      background-color:black
+    }
+    #back {
+      position: fixed;
+      bottom: 0px;
+      margin: 10px;
+    }
+    #sub {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 0px;
+      margin-bottom: 10px;
+    }
+    #next {
+      position: fixed;
+      bottom: 0px;
+      right: 0px;
+      margin: 10px;
+    }
+    #img {
+      position:fixed;
+      display: block;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      max-width:230px;
+      max-height:95px;
+      width: auto;
+      height: auto;
+    }
+  </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.4.0/Rx.js"></script>
+</head>
+<body>
+  <img id="img">
+  <button id="back">Back</button><select id="sub"><option>pics</option><option>cute</option></select><button id="next">Next</button>
+  <script src="index.js"></script>
+</body>
+</html>
