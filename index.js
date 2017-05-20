@@ -35,3 +35,17 @@ function getSubImages(sub) {
           })));
   }
 }
+
+// ---------------------- INSERT CODE  HERE ---------------------------
+// This "images" Observable is a dummy. Replace it with a stream of each
+// image in the current sub which is navigated by the user.
+const images = Observable.of("https://upload.wikimedia.org/wikipedia/commons/3/36/Hopetoun_falls.jpg");
+
+images.subscribe({
+  next(url) {
+    img.src = url;
+  },
+  error(e) {
+    alert("I'm having trouble loading the images for that sub. Please wait a while, reload, and then try again later.")
+  }
+})
