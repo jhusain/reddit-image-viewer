@@ -30,9 +30,9 @@ loaderImage.onload = function() {
 }
 ```
 
-If the image load is not successful, the following error image is displayed (https://jhusain.github.io/reddit-image-viewer/error.png).
+If the image load is not successful, the following error image is displayed (https://jhusain.github.io/reddit-image-viewer/error.png) instead of the image.
 
-![screenshot](https://jhusain.github.io/reddit-image-viewer/error.png)
+![screenshot](https://jhusain.github.io/reddit-image-viewer/error.png =100x100)
 
 This app may appear simple, but naive implementations could suffer from any of the following race conditions:
 
