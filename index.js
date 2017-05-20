@@ -2,7 +2,9 @@ const nextButton = document.getElementById("next");
 const backButton = document.getElementById("back");
 const subSelect = document.getElementById("sub");
 const img = document.getElementById("img");
+const loading = document.getElementById("loading");
 
+const LOADING_ERROR_URL = "https://jhusain.github.io/reddit-image-viewer/error.png";
 const Observable = Rx.Observable;
 
 // function which returns an array of image URLs for a given reddit sub
@@ -43,9 +45,20 @@ const images = Observable.of("https://upload.wikimedia.org/wikipedia/commons/3/3
 
 images.subscribe({
   next(url) {
+    // hide the loading image
+    loading.style.visibility = "hidden";
+
+    // set Image source to URL
     img.src = url;
   },
   error(e) {
     alert("I'm having trouble loading the images for that sub. Please wait a while, reload, and then try again later.")
   }
 })
+
+// This "actions" Observable is a placeholder. Replace it with an
+// observable that notfies whenever a user performs an action,
+// like changing the sub or navigating the images
+const actions = Observable.empty();
+
+actions.subscribe(() => loading.style.visibility = "visible");
