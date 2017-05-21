@@ -39,9 +39,53 @@ function getSubImages(sub) {
 }
 
 // ---------------------- INSERT CODE  HERE ---------------------------
-// This "images" Observable is a dummy. Replace it with a stream of each
-// image in the current sub which is navigated by the user.
-const images = Observable.of("https://upload.wikimedia.org/wikipedia/commons/3/36/Hopetoun_falls.jpg");
+
+const subs =
+  Observable.concat(
+    Observable.of(subSelect.value),
+    Observable.
+      fromEvent(subSelect, "change").
+      map(ev => ev.target.value));
+
+const nexts =
+  Observable.
+    fromEvent(nextButton, "click");
+
+const backs =
+  Observable.
+    fromEvent(backButton, "click");
+
+const offsets =
+  Observable.merge(
+    nexts.map(() => 1),
+    backs.map(() => -1));
+
+const indices =
+  Observable.concat(
+    Observable.of(0),
+    offsets.scan((acc,curr) => acc + curr, 0));
+
+const images =
+  subs.
+    map(sub =>
+      getSubImages(sub).
+        map(images =>
+          indices.
+            filter(index => index >= 0 && index < images.length).
+            map(index => images[index])).
+        switch().
+        map(preloadImage).
+        switch()).
+    switch();
+
+
+// This "actions" Observable is a placeholder. Replace it with an
+// observable that notfies whenever a user performs an action,
+// like changing the sub or navigating the images
+const actions = Observable.merge(subs, nexts, backs);
+
+actions.subscribe(() => loading.style.visibility = "visible");
+
 
 images.subscribe({
   next(url) {
@@ -54,11 +98,24 @@ images.subscribe({
   error(e) {
     alert("I'm having trouble loading the images for that sub. Please wait a while, reload, and then try again later.")
   }
-})
+});
 
-// This "actions" Observable is a placeholder. Replace it with an
-// observable that notfies whenever a user performs an action,
-// like changing the sub or navigating the images
-const actions = Observable.empty();
 
-actions.subscribe(() => loading.style.visibility = "visible");
+function preloadImage(src) {
+  return Observable.defer(() => {
+    const img = new Image();
+    const success =
+      Observable.
+        fromEvent(img, "load").
+        map(() => src);
+
+    const failure =
+      Observable.
+        fromEvent(img, "error").
+        map(() => LOADING_ERROR_URL)
+
+    img.src = src;
+
+    return Observable.merge(success, failure);
+  });
+}
